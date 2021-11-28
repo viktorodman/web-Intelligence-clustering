@@ -98,7 +98,6 @@ const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]
     const MAX_ITERATIONS = 20
 
     for (let i = 0; i < MAX_ITERATIONS; i++) {
-        
         for (let j = 0; j < blogs.length; j++) {
             let distance = Number.MAX_VALUE
             
@@ -118,9 +117,16 @@ const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]
             }
         }
         for (let m = 0; m < centroids.length; m++) {
-            const element = array[m];
-            
+            for (let n = 0; n < n; n++) {
+                let avg = 0
+                for (let o = 0; o < centroids[m].assignments.length; o++) {
+                    avg += centroids[m].assignments[0].wordOccurrences[n].occurrences
+                }
+                avg /= centroids[m].assignments.length
+                centroids[m].wordCounts[n].occurrences = avg
+            }            
         }
     }
 
+    console.log(centroids[0])
 }
