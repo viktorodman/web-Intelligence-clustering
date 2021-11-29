@@ -13,6 +13,16 @@ export default class CentroidList {
         }
     }
 
+    public hasNewAssignments(): boolean {
+        for (const centroid of this._centroids) {
+            if (centroid.hasNewAssignments()) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     public add(centroid: Centroid): void {
         this._centroids.push(centroid)
     }

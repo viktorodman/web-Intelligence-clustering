@@ -73,9 +73,11 @@ const calcWordAppearances = (blogData: BlogData[]): WordBlogAppearance[] => {
 }
 
 const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]): CentroidList => {
-    const MAX_ITERATIONS = 20
+    const MAX_ITERATIONS = 300
     const n = 706
     const k = 5
+
+    let iterationCounter = 0
 
     const centroids: CentroidList = generateCentroids(k, n, wordBlogAppearances)
 
@@ -96,6 +98,11 @@ const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]
             best.assign(blog)
         }
 
+        if (i > 0 && !centroids.hasNewAssignments()) {
+            console.log(iterationCounter)
+            return centroids
+        }
+
         for (const centroid of centroids.centroidList) {
             
             for (let w = 0; w < n; w++) {
@@ -109,7 +116,11 @@ const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]
                 centroid.setWordCount(wordBlogAppearances[w].word, avg)
             }
         }
+
+        iterationCounter++
     }
+
+    console.log(iterationCounter)
 
     return centroids
 }
