@@ -1,13 +1,79 @@
 import { BlogData } from "../types/blog-types"
-import { Cluster } from "../types/cluster"
+import { Cluster, HierarchicalResult } from "../types/cluster"
 import { readBlogsFromFile } from "./file-reader"
+import { pearson } from "./helpers"
 
 
 export const createHierarchicalCluster = async () => {
     const blogData: BlogData[] = await readBlogsFromFile()
-
     const starterClusters: Cluster[] = generateStarterClusters(blogData)
 
+    console.log(starterClusters.length)
+
+    const cluster: Cluster = createCluster(starterClusters)
+
+    const hierarchicalResult = createHierarchicalResult(cluster)
+
+    return hierarchicalResult
+}
+
+const createHierarchicalResult = (cluster: Cluster) => {
+    const hierarchicalResult: HierarchicalResult = { blog: "", left: null, right: null}
+
+    innerHierarchicalResult(cluster, hierarchicalResult)
+
+    return hierarchicalResult
+}
+
+const innerHierarchicalResult = (cluster: Cluster, hierarchicalResult: HierarchicalResult) => {
+    if (cluster.left !== null) {
+        hierarchicalResult.left = { blog: cluster.left.blog?.blogName || "", left: null, right: null }
+        innerHierarchicalResult(cluster.left, hierarchicalResult.left)
+    } 
+    if(cluster.right !== null) {
+        hierarchicalResult.right = { blog: cluster.right.blog?.blogName || "", left: null, right: null }
+        innerHierarchicalResult(cluster.right, hierarchicalResult.right)
+    } else {
+        hierarchicalResult = { blog: cluster.blog?.blogName || "", left: null, right: null }
+    }
+}
+
+
+const createCluster = (starterClusters: Cluster[]): Cluster => {
+    
+    while (starterClusters.length > 1) {
+        let closest = Number.MAX_VALUE
+        let a: Cluster = { blog: null, distance: 0, left: null, right: null, parent: null}
+        let b: Cluster = { blog: null, distance: 0, left: null, right: null, parent: null}
+
+        let distance = 0
+        for (const clusterA of starterClusters) {
+            for (const clusterB of starterClusters) {
+                if (clusterA.blog && clusterB.blog) {
+                    distance = pearson(clusterA.blog.wordOccurrences, clusterB.blog.wordOccurrences)
+                }
+                if (distance < closest && clusterA != clusterB) {
+                    closest = distance
+                    a = clusterA
+                    b = clusterB
+                }
+            }
+        }
+
+        const nC = merge(a, b, closest)
+
+        starterClusters.push(nC)
+
+
+
+        const aIndex = starterClusters.indexOf(a)
+        starterClusters.splice(aIndex, 1)
+        const bIndex = starterClusters.indexOf(b)
+        starterClusters.splice(bIndex, 1)
+        console.log(starterClusters.length)
+    }
+    console.log(starterClusters[0])
+    return starterClusters[0]
 }
 
 const merge = (clusterA: Cluster, clusterB: Cluster, distance: number): Cluster => {
@@ -15,9 +81,9 @@ const merge = (clusterA: Cluster, clusterB: Cluster, distance: number): Cluster 
     const p: Cluster = { blog: null, distance: 0, left: null, right: null, parent: null}
 
     p.left = clusterA
-    clusterA.parent = p
+    /* clusterA.parent = p */
     p.right = clusterB
-    clusterB.parent = p
+    /* clusterB.parent = p */
 
     const nb: BlogData = {
         blogName: "",
@@ -49,6 +115,8 @@ const generateStarterClusters = (blogData: BlogData[]): Cluster[] => {
         const cluster: Cluster = {blog, distance: 0, left: null, right: null, parent: null}
         clusters.push(cluster)
     }
+
+    
 
     return clusters
 }

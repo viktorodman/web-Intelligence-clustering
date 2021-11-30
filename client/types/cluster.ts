@@ -8,6 +8,12 @@ export type Cluster = {
     distance: number
 }
 
+export type HierarchicalResult = {
+    left: HierarchicalResult | null
+    right: HierarchicalResult | null
+    blog: string
+}
+
 /* export default class Cluster {
     private _parent?: Cluster = undefined
     private _left?: Cluster = undefined
