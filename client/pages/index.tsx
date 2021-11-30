@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
+import HirarPresentation from '../components/hirarchical-presentation'
 import KMeans from '../components/k-means'
 import SubmitButton from '../components/submit-button'
 import styles from '../styles/Home.module.css'
@@ -36,10 +37,10 @@ const Home: NextPage = () => {
           <SubmitButton text="K-means" click={fetchKMeansData}/>
           <SubmitButton text="Hierarchical" click={() => console.log()}/>
         </div>
-        {
+        {/* {
           kmeans.length > 0 ? <KMeans clusters={kmeans}/> : null
-        }
-        
+        } */}
+        <HirarPresentation test="hej"/>
       </main>
     </div>
   )
