@@ -5,10 +5,10 @@ import { useState } from 'react'
 import KMeans from '../components/k-means'
 import SubmitButton from '../components/submit-button'
 import styles from '../styles/Home.module.css'
-import { Cluster } from '../types/cluster'
+import { ClusterResult } from '../types/cluster-result'
 
 const Home: NextPage = () => {  
-  const [kmeans, setKMeans] = useState<Cluster[]>([])
+  const [kmeans, setKMeans] = useState<ClusterResult[]>([])
 
   const fetchKMeansData = async () => {
     const response = await fetch("http://localhost:3000/api/clustering/kmeans")

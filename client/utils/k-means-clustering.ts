@@ -1,8 +1,9 @@
 import Centroid from "../models/centroid"
 import CentroidList from "../models/centroid-list"
 import { BlogData, WordOccurrence } from "../types/blog-types"
-import { Cluster } from "../types/cluster"
+import { ClusterResult } from "../types/cluster-result"
 import { readBlogsFromFile } from "./file-reader"
+import { pearson } from "./helpers"
 
 type WordBlogAppearance = {
     word: string;
@@ -10,7 +11,7 @@ type WordBlogAppearance = {
     max: number;
 }
 
-export const kMeansClustering = async (): Promise<Cluster[]> => {
+export const kMeansClustering = async (): Promise<ClusterResult[]> => {
     const blogData: BlogData[] = await readBlogsFromFile()
     const wordsMinMax: WordBlogAppearance[] = calcWordAppearances(blogData)
 
@@ -19,32 +20,6 @@ export const kMeansClustering = async (): Promise<Cluster[]> => {
     return createClusters(kMeansMeasurement.centroidList)
 }
 
-const pearson = (firstBlog: WordOccurrence[], secondBlog: WordOccurrence[]): number => {
-    let sumFirst = 0
-    let sumSecond = 0
-    let sumFirstSq = 0
-    let sumSecondSq = 0
-    let pSum = 0
-
-    let n = 706
-
-    for (let i = 0; i < n; i++) {
-        const cntFirst = firstBlog[i].occurrences
-        const cntSecond = secondBlog[i].occurrences
-
-        sumFirst += cntFirst
-        sumSecond += cntSecond
-        sumFirstSq += cntFirst**2
-        sumSecondSq += cntSecond**2
-        pSum += cntFirst * cntSecond
-    }
-
-
-    const num = pSum - ((sumFirst * sumSecond) / n)
-    const den = Math.sqrt((sumFirstSq - sumFirst**2 / n) * (sumSecondSq - sumSecond**2 / n))
-
-    return 1 - (num/den)
-}
 
 const calcWordAppearances = (blogData: BlogData[]): WordBlogAppearance[] => {
     const wordsMinMax: WordBlogAppearance[] = []
@@ -151,8 +126,8 @@ const generateRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min)
 } 
 
-const createClusters = (centroidList: Centroid[]): Cluster[] => {
-    const clusters: Cluster[] = []
+const createClusters = (centroidList: Centroid[]): ClusterResult[] => {
+    const clusters: ClusterResult[] = []
     
     for (const centroid of centroidList) {
         const blogNames: string[] = []

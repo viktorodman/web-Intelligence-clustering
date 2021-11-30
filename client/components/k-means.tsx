@@ -1,7 +1,7 @@
 import styles from '../styles/Kmeans.module.css'
-import { Cluster } from '../types/cluster'
+import { ClusterResult } from '../types/cluster-result'
 type KMeansProps = {
-    clusters: Cluster[]
+    clusters: ClusterResult[]
 }
 
 const KMeans = ({ clusters }: KMeansProps) => {

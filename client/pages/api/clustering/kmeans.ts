@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Cluster } from '../../../types/cluster'
+import { ClusterResult } from '../../../types/cluster-result'
 import { kMeansClustering } from '../../../utils/k-means-clustering'
 
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Cluster[]>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ClusterResult[]>) {
     console.time("dbsave");
     const data = await kMeansClustering()
     console.timeEnd("dbsave")
