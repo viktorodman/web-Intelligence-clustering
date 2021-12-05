@@ -4,7 +4,7 @@ import { readBlogsFromFile } from "./file-reader"
 import { pearson } from "./helpers"
 
 
-export const createHierarchicalCluster = async () => {
+export const createHierarchicalCluster = async (): Promise<HierarchicalResult> => {
     const blogData: BlogData[] = await readBlogsFromFile()
     const starterClusters: Cluster[] = generateStarterClusters(blogData)
 
@@ -70,9 +70,8 @@ const createCluster = (starterClusters: Cluster[]): Cluster => {
         starterClusters.splice(aIndex, 1)
         const bIndex = starterClusters.indexOf(b)
         starterClusters.splice(bIndex, 1)
-        console.log(starterClusters.length)
     }
-    console.log(starterClusters[0])
+    
     return starterClusters[0]
 }
 
