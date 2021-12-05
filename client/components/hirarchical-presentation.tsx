@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import styles from '../styles/Hirar.module.css'
 import { HierarchicalResult } from '../types/cluster'
-import { ClusterResult } from '../types/cluster-result'
 import HirarNode from './hirar-node'
 import SubmitButton from './submit-button'
 
@@ -10,6 +8,7 @@ type HirarPresentationProps = {
 }
 
 /* REF: https://codepen.io/bisserof/pen/fdtBm */
+
 
 const HirarPresentation = ({ hirarData }: HirarPresentationProps) => {
   const createHirarLayout = (data: HierarchicalResult, level:number) => {
@@ -44,6 +43,10 @@ const HirarPresentation = ({ hirarData }: HirarPresentationProps) => {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.buttonWrapper}>
+        <SubmitButton text="Check all" click={() => document.querySelectorAll('input[type="checkbox"]').forEach((d: any) => d.checked=true)}/>
+        <SubmitButton text="Uncheck all" click={() => document.querySelectorAll('input[type="checkbox"]').forEach((d: any) => d.checked=false)}/>
+      </div>
       <ul className={styles.tree}>
         {createHirarLayout(hirarData, 1)}
       </ul>

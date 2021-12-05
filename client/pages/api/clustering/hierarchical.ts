@@ -5,8 +5,8 @@ import { createHierarchicalCluster } from '../../../utils/hierarchical-clusterin
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<HierarchicalResult>) {
-    console.time("dbsave");
+    console.time("hierarchical-calc-time:");
     const data = await createHierarchicalCluster()
-    console.timeEnd("dbsave")
+    console.timeEnd("hierarchical-calc-time:")
     res.status(200).json(data)
 }

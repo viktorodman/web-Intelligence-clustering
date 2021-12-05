@@ -29,5 +29,3 @@ export const readBlogsFromFile = async (): Promise<BlogData[]> => {
 
     return blogData
 }
-
-/* export const readWordsFromFile = async () */

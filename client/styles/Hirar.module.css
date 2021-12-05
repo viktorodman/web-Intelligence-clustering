@@ -13,3 +13,8 @@
     border-left: 1px dashed #3c3f41;
 }
 
+.buttonWrapper {
+    display: flex;
+    flex-direction: row;
+}
+

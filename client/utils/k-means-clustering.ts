@@ -1,6 +1,6 @@
 import Centroid from "../models/centroid"
 import CentroidList from "../models/centroid-list"
-import { BlogData, WordOccurrence } from "../types/blog-types"
+import { BlogData } from "../types/blog-types"
 import { ClusterResult } from "../types/cluster-result"
 import { readBlogsFromFile } from "./file-reader"
 import { pearson } from "./helpers"
@@ -14,7 +14,6 @@ type WordBlogAppearance = {
 export const kMeansClustering = async (): Promise<ClusterResult[]> => {
     const blogData: BlogData[] = await readBlogsFromFile()
     const wordsMinMax: WordBlogAppearance[] = calcWordAppearances(blogData)
-
     const kMeansMeasurement: CentroidList = kMeansCalc(blogData, wordsMinMax)
 
     return createClusters(kMeansMeasurement.centroidList)
@@ -23,7 +22,6 @@ export const kMeansClustering = async (): Promise<ClusterResult[]> => {
 
 const calcWordAppearances = (blogData: BlogData[]): WordBlogAppearance[] => {
     const wordsMinMax: WordBlogAppearance[] = []
-
     const wordList = blogData[0].wordOccurrences
 
     for (let i = 0; i < wordList.length; i++) {
@@ -95,7 +93,7 @@ const kMeansCalc = (blogs: BlogData[], wordBlogAppearances: WordBlogAppearance[]
         iterationCounter++
     }
 
-    console.log(iterationCounter)
+    console.log(`Number of iterations: ${iterationCounter}`)
 
     return centroids
 }

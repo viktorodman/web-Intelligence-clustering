@@ -13,27 +13,3 @@ export type HierarchicalResult = {
     right: HierarchicalResult | null
     blog: string
 }
-
-/* export default class Cluster {
-    private _parent?: Cluster = undefined
-    private _left?: Cluster = undefined
-    private _right?: Cluster = undefined
-    private _blog?: BlogData = undefined
-    private _distance: number = 0
-    
-
-
-    get blog() {
-        return this._blog
-    }
-
-    set left(cluster: Cluster) {
-        this._left = cluster
-    }
-    set right(cluster: Cluster) {
-        this._right = cluster
-    }
-    set parent(cluster: Cluster) {
-        this._parent = cluster
-    }
-} */

@@ -4,8 +4,8 @@ import { kMeansClustering } from '../../../utils/k-means-clustering'
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ClusterResult[]>) {
-    console.time("dbsave");
+    console.time("kmeans-calc-time:");
     const data = await kMeansClustering()
-    console.timeEnd("dbsave")
+    console.timeEnd("kmeans-calc-time:")
     res.status(200).json(data)
 }

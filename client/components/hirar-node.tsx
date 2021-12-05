@@ -1,9 +1,3 @@
-import { useState } from 'react'
-import styles from '../styles/Hirar.module.css'
-import { HierarchicalResult } from '../types/cluster'
-import { ClusterResult } from '../types/cluster-result'
-import SubmitButton from './submit-button'
-
 type HirarNodeProps = {
     nodeID: string
     text: string

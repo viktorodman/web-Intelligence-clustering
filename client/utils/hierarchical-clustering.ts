@@ -7,17 +7,12 @@ import { pearson } from "./helpers"
 export const createHierarchicalCluster = async (): Promise<HierarchicalResult> => {
     const blogData: BlogData[] = await readBlogsFromFile()
     const starterClusters: Cluster[] = generateStarterClusters(blogData)
-
-    console.log(starterClusters.length)
-
     const cluster: Cluster = createCluster(starterClusters)
 
-    const hierarchicalResult = createHierarchicalResult(cluster)
-
-    return hierarchicalResult
+    return createHierarchicalResult(cluster)
 }
 
-const createHierarchicalResult = (cluster: Cluster) => {
+const createHierarchicalResult = (cluster: Cluster): HierarchicalResult => {
     const hierarchicalResult: HierarchicalResult = { blog: "", left: null, right: null}
 
     innerHierarchicalResult(cluster, hierarchicalResult)
@@ -25,7 +20,7 @@ const createHierarchicalResult = (cluster: Cluster) => {
     return hierarchicalResult
 }
 
-const innerHierarchicalResult = (cluster: Cluster, hierarchicalResult: HierarchicalResult) => {
+const innerHierarchicalResult = (cluster: Cluster, hierarchicalResult: HierarchicalResult): void => {
     if (cluster.left !== null) {
         hierarchicalResult.left = { blog: cluster.left.blog?.blogName || "", left: null, right: null }
         innerHierarchicalResult(cluster.left, hierarchicalResult.left)
@@ -63,8 +58,6 @@ const createCluster = (starterClusters: Cluster[]): Cluster => {
         const nC = merge(a, b, closest)
 
         starterClusters.push(nC)
-
-
 
         const aIndex = starterClusters.indexOf(a)
         starterClusters.splice(aIndex, 1)
@@ -114,8 +107,6 @@ const generateStarterClusters = (blogData: BlogData[]): Cluster[] => {
         const cluster: Cluster = {blog, distance: 0, left: null, right: null, parent: null}
         clusters.push(cluster)
     }
-
-    
 
     return clusters
 }
